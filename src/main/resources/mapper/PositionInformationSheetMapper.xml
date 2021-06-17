@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.PositionInformationSheetMapper">
+    <select id="selectPositionInformationSheet" resultType="com.example.demo.pojo.PositionInformationSheet" parameterType="int">
+       SELECT * FROM PositionInformationSheet where jobsNumbers=#{jobsNumbers}
+    </select>
+    <select id="selectPositionInformationSheets" resultType="com.example.demo.pojo.PositionInformationSheet">
+       SELECT * FROM PositionInformationSheet
+    </select>
+    <select id="selectCountPositionInformationSheet" resultType="int">
+       SELECT count(*) FROM PositionInformationSheet
+    </select>
+    <update id="updatePositionInformationSheet" parameterType="com.example.demo.pojo.PositionInformationSheet">
+        update PositionInformationSheet set postTheName=#{postTheName},postSalary=#{postSalary} where jobsNumbers=#{jobsNumbers}
+    </update>
+    <insert id="insertPositionInformationSheet" parameterType="com.example.demo.pojo.PositionInformationSheet">
+        insert into PositionInformationSheet values (#{jobsNumbers},#{postTheName},#{postSalary});
+    </insert>
+    <delete id="deletePositionInformationSheet" parameterType="int">
+        delete from PositionInformationSheet where jobsNumbers=#{jobsNumbers}
+    </delete>
+</mapper>

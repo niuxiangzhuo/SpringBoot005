@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.EmployeeInformationSheetMapper">
+    <resultMap id="employeeInformationSheet" type="com.example.demo.pojo.EmployeeInformationSheet">
+        <result column="accountId" property="accountId"></result>
+        <result column="passwords" property="passwords"></result>
+        <result column="theName" property="theName"></result>
+        <result column="contactPhoneNumber" property="contactPhoneNumber"></result>
+        <result column="recordOfFormalSchooling" property="recordOfFormalSchooling"></result>
+        <association property="positionInformationSheet" javaType="com.example.demo.pojo.PositionInformationSheet">
+            <result column="jobsNumbers" property="jobsNumbers"></result>
+            <result column="postTheName" property="postTheName"></result>
+            <result column="postSalary" property="postSalary"></result>
+        </association>
+    </resultMap>
+    <select id="selectEmployeeInformationSheet" parameterType="string" resultMap="employeeInformationSheet">
+        SELECT * FROM EmployeeInformationSheet LEFT JOIN PositionInformationSheet ON EmployeeInformationSheet.`jobsNumbers`=PositionInformationSheet.`jobsNumbers` WHERE EmployeeInformationSheet.`accountId`=#{accountId}
+    </select>
+    <select id="selectEmployeeInformationSheet1" parameterType="string" resultMap="employeeInformationSheet">
+        SELECT * FROM EmployeeInformationSheet LEFT JOIN PositionInformationSheet ON EmployeeInformationSheet.`jobsNumbers`=PositionInformationSheet.`jobsNumbers` WHERE EmployeeInformationSheet.`contactPhoneNumber`=#{contactPhoneNumber}
+    </select>
+    <select id="selectEmployeeInformationSheets" resultMap="employeeInformationSheet">
+        SELECT * FROM EmployeeInformationSheet LEFT JOIN PositionInformationSheet ON EmployeeInformationSheet.`jobsNumbers`=PositionInformationSheet.`jobsNumbers` WHERE PositionInformationSheet.`jobsNumbers`!='4'
+    </select>
+    <select id="selectCountEmployeeInformationSheet" resultType="int">
+        SELECT count(*) FROM EmployeeInformationSheet LEFT JOIN PositionInformationSheet ON EmployeeInformationSheet.`jobsNumbers`=PositionInformationSheet.`jobsNumbers` WHERE PositionInformationSheet.`jobsNumbers`!='4'
+    </select>
+    <insert id="insertEmployeeInformationSheet" parameterType="com.example.demo.pojo.EmployeeInformationSheet">
+        insert into EmployeeInformationSheet values (#{accountId},#{passwords},#{theName},#{positionInformationSheet.jobsNumbers},#{contactPhoneNumber},#{recordOfFormalSchooling});
+    </insert>
+    <update id="updateEmployeeInformationSheet" parameterType="com.example.demo.pojo.EmployeeInformationSheet">
+        update EmployeeInformationSheet set  passwords=#{passwords},theName=#{theName},jobsNumbers=#{positionInformationSheet.jobsNumbers},contactPhoneNumber=#{contactPhoneNumber},recordOfFormalSchooling=#{recordOfFormalSchooling}  where EmployeeInformationSheet.`accountId`=#{accountId};
+    </update>
+    <delete id="deleteEmployeeInformationSheet" parameterType="string">
+        delete from EmployeeInformationSheet where  EmployeeInformationSheet.`accountId`=#{accountId}
+    </delete>
+</mapper>

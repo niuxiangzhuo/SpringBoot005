@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <title>修改岗位</title>
+    <style type="text/css">
+        .container{
+            width: 420px;
+            height: 320px;
+            min-height: 320px;
+            max-height: 320px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            padding: 20px;
+            z-index: 130;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 3px 18px rgba(100, 0, 0, .5);
+            font-size: 16px;
+        }
+        .close{
+            background-color: white;
+            border: none;
+            font-size: 18px;
+            margin-left: 410px;
+            margin-top: -10px;
+        }
+
+        .layui-input{
+            border-radius: 5px;
+            width: 300px;
+            height: 40px;
+            font-size: 15px;
+        }
+        .layui-form-item{
+            margin-left: -20px;
+        }
+        #logoid{
+            margin-top: -16px;
+            padding-left:150px;
+            padding-bottom: 15px;
+        }
+        .layui-btn{
+            margin-left: -50px;
+            border-radius: 5px;
+            width: 350px;
+            height: 40px;
+            font-size: 15px;
+        }
+        .verity{
+            width: 120px;
+        }
+        .font-set{
+            font-size: 13px;
+            text-decoration: none;
+            margin-left: 120px;
+        }
+        a:hover{
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="layui-form-item">
+        <label class="layui-form-label">岗位编号</label>
+        <div class="layui-input-block">
+            <input type="text" id="jobsNumbers" readonly class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">岗位名称</label>
+        <div class="layui-input-inline">
+            <input type="text" id="postTheName" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">岗位薪资</label>
+        <div class="layui-input-block">
+            <input type="text" id="postSalary"class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo" id="yes">提交</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/static/jquery/jQuery1.11.3.js"></script>
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script>
+    $(document).ready(function () {
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        layui.use(['form', 'layedit', 'laydate'], function(){
+            var form = layui.form
+                ,layer = layui.layer
+                ,layedit = layui.layedit
+                ,laydate = layui.laydate;
+        });
+        $.ajax({
+            type:'post',
+            url:'updatePosit1',
+            success:function (res) {
+                var json = $.parseJSON(res);
+                $('#jobsNumbers').val(json.jobsNumbers);
+                $('#postTheName').val(json.postTheName);
+                $('#postSalary').val(json.postSalary);
+            }
+        })
+        $('#yes').click(function () {
+            var jobsNumbers = $('#jobsNumbers').val();
+            var postTheName = $('#postTheName').val();
+            var postSalary = $('#postSalary').val();
+            var patt = /^[\u4e00-\u9fa5]{1,}$/;
+            var patt1 = /^[0-9]{1,}$/;
+            if(patt.test(postTheName)){
+                if(patt1.test(postSalary)){
+                    $.ajax({
+                        type:'post',
+                        url:'updatePos',
+                        data:{
+                            jobsNumbers:jobsNumbers,
+                            postTheName:postTheName,
+                            postSalary:postSalary
+                        },
+                        success:function (res) {
+                            if(res>0){
+                                alert("修改成功，请手动刷新页面");
+                            }else{
+                                alert("修改失败，请手动刷新页面");
+                            }
+                            parent.layer.close(index);
+                        }
+                    })
+                }else{
+                    alert("岗位薪资是整数")
+                }
+            }else{
+                alert("岗位名称是必须是汉字");
+            }
+        })
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/layui/css/layui.css">
+    <title>查看个人信息</title>
+    <script type="text/javascript" src="static/jquery/jQuery1.11.3.js"></script>
+    <script type="text/javascript" src="static/layui/layui.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名:</label>
+        <div class="layui-input-block">
+            <span id="theName"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">岗位:</label>
+        <div class="layui-input-inline">
+            <span id="jobsNumbers"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系电话:</label>
+        <div class="layui-input-inline">
+            <span id="contactPhoneNumber"></span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">学历:</label>
+        <div class="layui-input-inline">
+            <span id="recordOfFormalSchooling"></span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"  th:inline="none">
+    $(document).ready(function () {
+        $.ajax({
+            type:'post',
+            url:'selectEmpl',
+            success:function (res) {
+                var empl = $.parseJSON(res);
+                $('#theName').text(empl.theName);
+                $('#jobsNumbers').text(empl.positionInformationSheet.postTheName);
+                $('#contactPhoneNumber').text(empl.contactPhoneNumber);
+                $('#recordOfFormalSchooling').text(empl.recordOfFormalSchooling);
+            }
+        })
+        //监听提交,阻止表单提交
+        // form.on('submit(demo1)', function(data){
+        //     layer.alert(JSON.stringify(data.field), {
+        //         title: '最终的提交信息'
+        //     })
+        //     return false;
+        // });
+    });
+</script>
+</body>
+</html>

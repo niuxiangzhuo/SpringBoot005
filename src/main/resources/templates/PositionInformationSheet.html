@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>所有住户信息</title>
+    <script type="text/javascript" src="static/JQuery/jQuery1.11.3.js"></script>
+    <link rel="stylesheet" href="static/layui/css/layui.css"  media="all">
+    <script src="static/layui/layui.js" charset="utf-8"></script>
+</head>
+<body>
+<table class="layui-hide" id="tab" lay-filter="test"></table>
+</body>
+<!--&lt;!&ndash; 头部工具栏 &ndash;&gt;-->
+<!--<script type="text/html" id="toolbarDemo">-->
+<!--    <div class="layui-btn-container">-->
+<!--        <button class="layui-btn layui-btn-sm" lay-event="add">添加住户</button>-->
+<!--    </div>-->
+<!--</script>-->
+
+<!-- 右侧工具栏-修改删除 -->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upd">修改</a>
+</script>
+
+<script type="text/javascript"  th:inline="none">
+    $(document).ready(function () {
+        layui.use(['layer','table'],function () {
+            var table=layui.table;
+            var layer=layui.layer;
+            table.render({
+                elem:'#tab',
+                method:'post',
+                url:'selectPosit',//数据接口
+                page:true,//开启分页
+                // toolbar: '#toolbarDemo',//开启头部工具栏，并为其绑定左侧模板
+                cols:[[
+                    {field: 'jobsNumbers',title:'岗位编号',width:180,fixed:'left',unresize:true,sort:true},
+                    {field: 'postTheName',title: '岗位名称',width: 200},
+                    {field: 'postSalary',title: '岗位薪资',width: 200},
+                    {fixed: 'right',title: '操作',toolbar:'#barDemo',width: 250}
+                ]]
+            });
+
+
+            //监听行工具事件--修改删除事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'upd'){
+                    layer.open({
+                        type: 2,
+                        content: 'updatePosit?jobsNumbers='+data.jobsNumbers //这里content是一个普通的String
+                    });
+                }
+            });
+
+
+
+
+
+
+            // //头工具栏事件
+            // table.on('toolbar(test)', function(obj){
+            //     switch(obj.event){
+            //         case 'add':
+            //             var username=prompt("请输入手机号");
+            //             if(username==null){
+            //                 location.reload();
+            //             }else{
+            //                 $.ajax({
+            //                     type:'post',
+            //                     url:'add',
+            //                     data:{
+            //                         username:username
+            //                     },
+            //                     success : function (res) {
+            //                         var json=$.parseJSON(res);
+            //                         if(json>0){
+            //                             alert("添加成功,初始密码是000000,六个零");
+            //                             location.reload();
+            //                         }else{
+            //                             alert("添加失败");
+            //                             location.reload();
+            //                         }
+            //                     }
+            //                 })
+            //             }
+            //             break;
+            //     };
+            // });
+        })
+    })
+</script>
+</html>
